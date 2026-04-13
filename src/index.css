@@ -1,0 +1,323 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-base: #04080F;
+  --bg-panel: #080D17;
+  --bg-elevated: #0E1525;
+  --bg-hover: rgba(59, 130, 246, 0.05);
+  --blue-600: #2563EB;
+  --blue-500: #3B82F6;
+  --blue-400: #60A5FA;
+  --blue-300: #93C5FD;
+  --blue-glow: rgba(59, 130, 246, 0.25);
+  --blue-glow-strong: rgba(59, 130, 246, 0.45);
+  --gold-600: #D97706;
+  --gold-500: #F59E0B;
+  --gold-400: #FBBF24;
+  --gold-glow: rgba(245, 158, 11, 0.25);
+  --green-500: #10B981;
+  --green-400: #34D399;
+  --green-glow: rgba(16, 185, 129, 0.2);
+  --red-500: #EF4444;
+  --red-400: #F87171;
+  --red-glow: rgba(239, 68, 68, 0.2);
+  --amber-500: #F59E0B;
+  --text-primary: #EFF6FF;
+  --text-secondary: #94A3B8;
+  --text-dim: #4B5563;
+  --border: rgba(59, 130, 246, 0.1);
+  --border-bright: rgba(59, 130, 246, 0.25);
+  --border-gold: rgba(245, 158, 11, 0.25);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: 'Chakra Petch', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Subtle scanline overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.03) 3px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: var(--bg-panel); }
+::-webkit-scrollbar-thumb { background: var(--blue-600); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--blue-500); }
+
+/* ─── Animations ─────────────────────────────────────────────── */
+
+@keyframes pulseRed {
+  0%, 100% { opacity: 1; box-shadow: 0 0 4px var(--red-500); }
+  50% { opacity: 0.3; box-shadow: 0 0 2px var(--red-500); }
+}
+
+@keyframes flashGreen {
+  0% { background-color: rgba(16, 185, 129, 0.3); }
+  100% { background-color: transparent; }
+}
+
+@keyframes flashRed {
+  0% { background-color: rgba(239, 68, 68, 0.3); }
+  100% { background-color: transparent; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(110%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes numberTick {
+  0% { opacity: 0; transform: translateY(-4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes blueGlowPulse {
+  0%, 100% { box-shadow: 0 0 6px var(--blue-glow); }
+  50% { box-shadow: 0 0 18px var(--blue-glow-strong), 0 0 36px var(--blue-glow); }
+}
+
+@keyframes goldShimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes rowAppear {
+  from { opacity: 0; max-height: 0; transform: translateY(-8px); }
+  to { opacity: 1; max-height: 80px; transform: translateY(0); }
+}
+
+.pulse-red { animation: pulseRed 1.3s ease-in-out infinite; }
+.flash-green { animation: flashGreen 0.7s ease-out forwards; }
+.flash-red { animation: flashRed 0.7s ease-out forwards; }
+.slide-in-right { animation: slideInRight 0.32s cubic-bezier(0.22, 1, 0.36, 1); }
+.fade-in-up { animation: fadeInUp 0.4s ease-out; }
+.number-tick { animation: numberTick 0.22s ease-out; }
+.glow-blue { animation: blueGlowPulse 2.5s ease-in-out infinite; }
+.row-appear { animation: rowAppear 0.4s ease-out forwards; }
+
+/* ─── Panels ──────────────────────────────────────────────────── */
+
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--blue-500) 50%, transparent 100%);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.panel-gold::before {
+  background: linear-gradient(90deg, transparent 0%, var(--gold-500) 50%, transparent 100%);
+  opacity: 0.45;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px 8px;
+  border-bottom: 1px solid var(--border);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.panel-header .dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--blue-500);
+  box-shadow: 0 0 6px var(--blue-500);
+}
+
+/* ─── Odds Table ──────────────────────────────────────────────── */
+
+.odds-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.odds-table th {
+  padding: 7px 10px;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-align: right;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg-elevated);
+  z-index: 1;
+}
+.odds-table th:first-child { text-align: left; padding-left: 14px; }
+
+.odds-table td {
+  padding: 8px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-align: right;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.04);
+  white-space: nowrap;
+  transition: background-color 0.15s;
+}
+.odds-table td:first-child {
+  text-align: left;
+  padding-left: 14px;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 11px;
+}
+
+.odds-table tr.selected td { background: rgba(59, 130, 246, 0.08); }
+.odds-table tr:hover:not(.selected) td { background: var(--bg-hover); }
+
+.odds-cell-flash-up { animation: flashGreen 0.7s ease-out forwards; }
+.odds-cell-flash-down { animation: flashRed 0.7s ease-out forwards; }
+
+/* ─── Value bet badge ─────────────────────────────────────────── */
+
+.vb-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 7px;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 3px;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--gold-400);
+  white-space: nowrap;
+}
+
+/* ─── Kelly buttons ───────────────────────────────────────────── */
+
+.kelly-btn {
+  flex: 1;
+  padding: 7px 8px;
+  background: transparent;
+  border: 1px solid var(--border-bright);
+  border-radius: 4px;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.kelly-btn:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--blue-400);
+  border-color: var(--blue-500);
+}
+.kelly-btn.active {
+  background: rgba(59, 130, 246, 0.18);
+  color: var(--blue-400);
+  border-color: var(--blue-500);
+  box-shadow: 0 0 10px var(--blue-glow);
+}
+
+/* ─── Add to betslip button ───────────────────────────────────── */
+
+.add-bet-btn {
+  padding: 6px 14px;
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  border-radius: 4px;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--blue-400);
+  cursor: pointer;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+.add-bet-btn:hover {
+  background: rgba(59, 130, 246, 0.25);
+  box-shadow: 0 0 14px var(--blue-glow);
+}
+.add-bet-btn.added {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: var(--green-400);
+}
+
+/* ─── Input styles ────────────────────────────────────────────── */
+
+.data-input {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-bright);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  padding: 5px 8px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.data-input:focus { border-color: var(--blue-500); box-shadow: 0 0 8px var(--blue-glow); }
+
+/* ─── Impact badge ────────────────────────────────────────────── */
+
+.impact-low  { color: var(--text-dim); background: rgba(75,85,99,0.2); border: 1px solid rgba(75,85,99,0.3); }
+.impact-med  { color: var(--gold-400); background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25); }
+.impact-high { color: var(--red-400); background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); }
+
+.impact-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
